@@ -5,12 +5,14 @@
 
 	let textInput: string;
 	let messagesMap: Array<Message> = [];
+	messagesMap.push({username: "Boby", content: "I hate badminton"})
 	let websocket: WebSocket;
 
 	onMount(() => {
 		websocket = new WebSocket(`ws://${location.host}/ws?peerId=${$username}`);
 		websocket.addEventListener("message", ({ data }) => {
-			messagesMap.push(data)
+			console.log(JSON.parse(data))
+			messagesMap.push(JSON.parse(data))
 		});
 		return () => websocket.close(); 
 	})
@@ -18,8 +20,8 @@
 
 <input bind:value={textInput}/>
 <button on:click={() => {
-	websocket.send(`${{username: $username, content:textInput}}`)
-	textInput = ""
+	websocket.send(`${{username: $username, content: textInput}}`);
+	textInput = "";
 }}>send</button>
 {#each messagesMap as message}
 	<p><strong>[{message.username}]</strong> {message.content}</p>
