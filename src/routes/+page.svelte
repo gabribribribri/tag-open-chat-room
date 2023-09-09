@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { onMount } from "svelte"
-
-    let id: string
+	import { username } from "$lib/stores"
 </script>
 
-<input bind:value={id} />
-<a href="/discussion?id={id}">Go !</a>
+<input bind:value={$username} />
+<a href="/discussion">Go !</a>
