@@ -9,4 +9,8 @@ declare global {
 	}
 }
 
+module globalThis {
+	declare var httpServer: import("http").Server | undefined
+}
+
 export {};
