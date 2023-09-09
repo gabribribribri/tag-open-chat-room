@@ -1,6 +1,11 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import { username } from "$lib/stores"
+	
+	function verifyUsername() {
+		if ($username != "") goto("/discussion")
+	}
 </script>
 
 <input bind:value={$username} />
-<a href="/discussion">Go !</a>
+<button on:click={verifyUsername}>Go !</button>
