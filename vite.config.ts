@@ -11,5 +11,12 @@ function WebSocketDevPlugin(): Plugin {
 }
 
 export default defineConfig({
-	plugins: [WebSocketDevPlugin(), sveltekit()]
+	plugins: [WebSocketDevPlugin(), sveltekit()],
+	
+	server: {
+		host: true,
+		hmr: {
+			port: 5174,
+		},
+	},
 });

@@ -30,6 +30,8 @@ export function prepareWebSocketServer(server?: Server) {
 			return socket.destroy()
 		}
 
+		//"http://localhost:5173/ws?peerId=klsjvhbsdfkb"
+
 		wss.handleUpgrade(req, socket, head, ws => {
 			onConnection(Object.assign(ws, { peerId }), req)
 		})
@@ -42,5 +44,7 @@ export function onConnection(socket: ServerSocket, req: IncomingMessage) {
 	socket.on("close", code => console.debug({ peerId, code }, "Socket disconnected"))
 	socket.on("error", error => console.error({ peerId, error }, "Socket error"))
 
-	socket.addEventListener("message", ({ data }) => {})
+	socket.addEventListener("message", ({ data }) => {
+        console.log(data);
+    })
 }
