@@ -1,16 +1,26 @@
 <script lang="ts">
 	import { onMount } from "svelte"
-	import { username } from "$lib/stores"
+	import { username, type Message} from "$lib/stores"
 	import { goto } from "$app/navigation";
 
-	onMount(() => {
-		const ws = new WebSocket(`ws://${location.host}/ws?peerId=${$username}`);
-		ws.addEventListener("open", () => {
-			ws.send("yo")
-		});
+	let textInput: string;
+	let messagesMap: Array<Message> = [];
+	let websocket: WebSocket;
 
-		return () => {
-			ws.close(); 
-		}
+	onMount(() => {
+		websocket = new WebSocket(`ws://${location.host}/ws?peerId=${$username}`);
+		websocket.addEventListener("message", ({ data }) => {
+			messagesMap.push(data)
+		});
+		return () => websocket.close(); 
 	})
 </script>
+
+<input bind:value={textInput}/>
+<button on:click={() => {
+	websocket.send(`${{username: $username, content:textInput}}`)
+	textInput = ""
+}}>send</button>
+{#each messagesMap as message}
+	<p><strong>[{message.username}]</strong> {message.content}</p>
+{/each}
