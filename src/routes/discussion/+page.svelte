@@ -6,6 +6,13 @@
 	let textInput: string;
 	let messagesArr: Array<Message> = [];
 	let websocket: WebSocket;
+	
+	let input = document.getElementById("input-box")
+	input?.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") {
+			sendMessage();
+		}
+	});
 
 	onMount(() => {
 		websocket = new WebSocket(`ws://${location.host}/ws?peerId=${$username}`);
@@ -16,14 +23,16 @@
 		});
 		return () => websocket.close(); 
 	})
+
+	function sendMessage() {
+		if (textInput === "") return;
+		websocket.send(JSON.stringify({author: $username, content: textInput}));
+		textInput = "";
+	}
 </script>
 
-<input bind:value={textInput}/>
-<button on:click={() => {
-	websocket.send(JSON.stringify({author: $username, content: textInput}));
-	messagesArr = messagesArr
-	textInput = "";
-}}>send</button>
+<input id="input-box"bind:value={textInput}/>
+<button on:click={sendMessage}>send</button>
 {#each messagesArr as message}
 	<p><strong>[{message.author}]</strong> {message.content}</p>
 {/each}
