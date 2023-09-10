@@ -30,13 +30,12 @@
 	}
 </script>
 
-<body>
 
-	<input bind:value={textInput} on:keydown={enterToSendMessage}/>
-	<button on:click={sendMessage}>send</button>
+<input bind:value={textInput} on:keydown={enterToSendMessage}/>
+<button on:click={sendMessage}>send</button>
 
-	{#each messagesArr as message}
-		<p><strong>[{message.author}]</strong> {message.content}</p>
-	{/each}
+{#each messagesArr as message}
+	<p><strong>[{message.author}]</strong> {message.content}</p>
+{/each}
 
-</body>
+
