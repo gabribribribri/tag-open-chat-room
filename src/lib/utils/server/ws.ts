@@ -1,12 +1,13 @@
 import type { Server, IncomingMessage } from "http"
 import { WebSocketServer, WebSocket as WebSocketBase } from "ws"
-import { get } from "svelte/store"
+import { Log } from "$lib/log";
 
 type UserSocket = {
 	username: string;
 	socket: WebSocketBase;
 }
 
+const logger = new Log(3);
 let userArr = new Array<UserSocket>();
 
 export function prepareWebSocketServer(server?: Server) {
@@ -16,21 +17,18 @@ export function prepareWebSocketServer(server?: Server) {
 
 	server.removeAllListeners("upgrade")
 	server.addListener("upgrade", async (req, socket, head) => {
-		console.debug({}, "Start socket upgrade")
+		logger.Warn("starting upgrade process");
 
 		const url = new URL(req.url!, `http://${req.headers.host}`)
 		const username = url.searchParams.get("peerId")
 		if (!username) {
-			console.warn(
-				{ error: "socket.nopeerid" },
-				"Abort socket upgrade: missing 'peerId' query param",
-			)
+			logger.Error("no 'username' parameter");
 			return socket.destroy()
 		}
 
 		const path = url.pathname
 		if (path != "/ws") {
-			console.warn({ error: "socket.invalidpath", path }, "Abort socket upgrade: invalid path")
+			logger.Error("invalid path");
 			return socket.destroy()
 		}
 
@@ -42,11 +40,9 @@ export function prepareWebSocketServer(server?: Server) {
 	})
 }
 
-export function onConnection(socket: WebSocketBase, username: string) {
-	console.debug({ username }, "Socket connected");
-	
-	socket.on("close", code => console.debug({ username, code }, "Socket disconnected"));
-	socket.on("error", error => console.error({ username, error }, "Socket error"));
+export function onConnection(socket: WebSocketBase, username: string) {	
+	socket.on("close", code => logger.Info(`'${username}' disconnected from the room`));
+	socket.on("error", error => logger.Error("error in the socket"));
 	socket.addEventListener("message", ({ data }) => {
 		for (const user of userArr) {
 			user.socket.send(data);
@@ -54,4 +50,5 @@ export function onConnection(socket: WebSocketBase, username: string) {
 	});
 	
 	userArr.push({username, socket});
+	logger.Info(`'${username}' connected to the room`);
 }
