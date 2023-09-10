@@ -26,7 +26,7 @@ export function prepareWebSocketServer(server?: Server) {
 			return socket.destroy()
 		}
 
-		const path = url.pathname
+		const path = url.pathname;
 		if (path != "/ws") {
 			logger.Error("invalid path");
 			return socket.destroy()
@@ -44,6 +44,9 @@ export function onConnection(socket: WebSocketBase, username: string) {
 	socket.on("close", code => logger.Info(`'${username}' disconnected from the room`));
 	socket.on("error", error => logger.Error("error in the socket"));
 	socket.addEventListener("message", ({ data }) => {
+		let message = JSON.parse(data.toString());
+		logger.Info(`'${message.author}' send the message '${message.content}'`);
+
 		for (const user of userArr) {
 			user.socket.send(data);
 		} 

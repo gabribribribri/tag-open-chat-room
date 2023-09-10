@@ -6,13 +6,12 @@
 	let textInput: string;
 	let messagesArr: Array<Message> = [];
 	let websocket: WebSocket;
-	
-	let input = document.getElementById("input-box")
-	input?.addEventListener("keypress", (event) => {
-		if (event.key === "Enter") {
-			sendMessage();
+
+	function enterToSendMessage(event: KeyboardEvent) {
+		if (event.keyCode == 13) {
+			sendMessage()
 		}
-	});
+	}
 
 	onMount(() => {
 		websocket = new WebSocket(`ws://${location.host}/ws?peerId=${$username}`);
@@ -22,7 +21,7 @@
 			messagesArr = messagesArr
 		});
 		return () => websocket.close(); 
-	})
+	});
 
 	function sendMessage() {
 		if (textInput === "") return;
@@ -31,8 +30,13 @@
 	}
 </script>
 
-<input id="input-box"bind:value={textInput}/>
-<button on:click={sendMessage}>send</button>
-{#each messagesArr as message}
-	<p><strong>[{message.author}]</strong> {message.content}</p>
-{/each}
+<body>
+
+	<input bind:value={textInput} on:keydown={enterToSendMessage}/>
+	<button on:click={sendMessage}>send</button>
+
+	{#each messagesArr as message}
+		<p><strong>[{message.author}]</strong> {message.content}</p>
+	{/each}
+
+</body>
