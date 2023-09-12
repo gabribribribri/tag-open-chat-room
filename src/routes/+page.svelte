@@ -19,8 +19,11 @@
 
 		<div id="input-zone">
 
-			<input bind:value={$username} on:keydown={enterKeyPressed} id="username-input">
-			<label id="username-label">Username</label>
+			<input 
+				bind:value={$username} on:keydown={enterKeyPressed}
+				placeholder=""
+				id="username-input">
+			<label for="username-input" id="username-label">Username</label>
 
 			<button id="go-button" on:click={verifyUsername} />
 		</div>
@@ -67,34 +70,41 @@
 	}
 
 	#username-input {
-		width: 400px;
-		height: 70px;
+		width: 20rem;
+		margin-right: 5rem;
+		position: relative;
+		top: 2.8px;
 		color: white;
 		background-color: transparent;
 		border: transparent;
 		outline: none;
 		font-size: larger;
 		font-weight: 600;
-	}
-
-	#username-label {
-		font-size: larger;
-		position: absolute;
-		left: 10px;
-		top: 3px;
-		pointer-events: none;
+		padding-bottom: 4px;
+		border-bottom: solid white;
 		transition: 0.2s;
 	}
 
-	#username-input:focus ~ #username-label {
-		top: -13px;
-		left: 1px;
-		font-size: 12px;
+	#username-input:placeholder-shown {
+		border-bottom: solid transparent;
+	}
+
+	#username-label {
+		font-size: 13px;
+		pointer-events: none;
+		position: absolute;
+		top: -18px;
+		left: 2.5px;
+		transition: 0.2s;
+	}
+
+	#username-input:placeholder-shown ~ #username-label {
+		font-size: 20px;
+		top: 0;
 	}
 
 	#go-button {
 		/* Sizing */
-		margin-left: 1rem;
 		height: 2rem;
 		width: 2rem;
 
