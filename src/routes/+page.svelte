@@ -25,7 +25,9 @@
 				id="username-input">
 			<label for="username-input" id="username-label">Username</label>
 
-			<button id="go-button" on:click={verifyUsername} />
+			<div class="login-button">
+				<button id="go-button" on:click={verifyUsername}>Login</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -39,13 +41,25 @@
 		justify-content: center;
 		height: 100%;
 		display: flex;
-		background: rgb(232,34,255);
-		background: linear-gradient(128deg, rgba(232,34,255,1) 0%, rgba(255,71,71,1) 29%, rgba(255,155,21,1) 100%);
+		background-color: #404040;
 		color: white;
 		font-family: 'Poppins', sans-serif;
 	}
 
+	h1 {
+		margin-top: 0;
+	}
+
+	@media screen and (max-width: 950px) {
+		h1 {
+			display: none;
+		}
+	}
+
 	#content {
+		border: solid;
+		padding: 3rem;
+		background-color: #202020;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -94,29 +108,35 @@
 		pointer-events: none;
 		position: absolute;
 		top: -18px;
-		left: 2.5px;
+		left: 0;
 		transition: 0.2s;
 	}
 
 	#username-input:placeholder-shown ~ #username-label {
 		font-size: 20px;
 		top: 0;
+		left: 2.5px;
 	}
 
 	#go-button {
+		text-align: center;
 		/* Sizing */
-		height: 2rem;
-		width: 2rem;
+		width: fit-content;
+		padding: 0.1rem 0.4rem;
 
 		/* Styling */
-		border: transparent;
+		border: solid white 0.2rem;
 		color: white;
+
+		/* Font */
+		font-family: "Poppins";
+		font-size: large;
 
 		/* Background */
 		background-color: transparent;
-		background-image: url('../lib/icon/sign-in.svg');
 		background-position: center;
 		background-size: cover;
 		background-repeat: no-repeat;
 	}
+
 </style>
