@@ -18,11 +18,12 @@
 		<h1 id="title">Welcome to T&G Open Chat Room</h1>
 
 		<div id="input-zone">
-
-			<input 
-				bind:value={$username} on:keydown={enterKeyPressed}
+			<input
+				bind:value={$username}
+				on:keydown={enterKeyPressed}
 				placeholder=""
-				id="username-input">
+				id="username-input"
+			/>
 			<label for="username-input" id="username-label">Username</label>
 
 			<div class="login-button">
@@ -31,7 +32,6 @@
 		</div>
 	</div>
 </div>
-
 
 <style>
 	/*import Days One Font*/
@@ -119,17 +119,17 @@
 	}
 
 	#go-button {
-		text-align: center;
 		/* Sizing */
+		z-index: 2;
 		width: fit-content;
-		padding: 0.1rem 0.4rem;
+		padding: 0.1rem 0.8rem;
 
 		/* Styling */
 		border: solid white 0.2rem;
 		color: white;
 
 		/* Font */
-		font-family: "Poppins";
+		font-family: 'Poppins';
 		font-size: large;
 
 		/* Background */
@@ -139,4 +139,23 @@
 		background-repeat: no-repeat;
 	}
 
+	#go-button:hover {
+		color: #202020;
+
+	}
+
+	#go-button::before {
+		content: "";
+		position: absolute;
+		background-color: white;
+		height: 100%;
+		width: 0%;
+		z-index: 1;
+		overflow: hidden;
+		text-decoration: none;
+	}
+
+	#go-button:hover::before {
+		width: 160%;
+	}
 </style>
